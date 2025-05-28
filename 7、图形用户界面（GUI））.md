@@ -1,3 +1,4 @@
+[TOC]
 # 图形用户界面（GUI）
 ## Java图形用户界面概述
 我们来概述一下 Java 中的**图形用户界面 (Graphical User Interface, GUI)** 开发。
