@@ -82,6 +82,28 @@ public class HelloWorld {                      // <-- 主类：含有main()方�
 3. 运行Application应用程序
 4. 结果: Hello World !
 
+1. 检查计算机的环境变量：
+==java_home= c:\jdk==    //用于指示 Java Development Kit (JDK) 的安装根目录。
+==path=%path%;c:\jdk\bin==     //操作系统会按照这些路径的顺序查找可执行文件（如 .exe 文件、脚本等）。比如命令行输入java，javac，操作系统会遍历path变量
+==Classpath=.; c:\jdk\lib\dt.jar; c:\jdk\lib\tools.jar;d:\save;== //告诉 JVM 在哪里查找 Java 类文件（.class 文件）和 JAR 文件
+操作步骤：控制面板/系统/“高级”选项卡/环境变量
+
+2. 编写一个Java Application应用程序，利用JDK软件包中的工具编译并运行，在屏幕上输出“Hello  World! ”。
+步骤：
+ 1) 编辑HelloWorld.java: 
+         在D:\Save目录中，编辑源文件HelloWorld.java (用记事本或editplus编辑)  
+	    public class HelloWorld {
+          public static void main(String[] args) {
+            System.out.println("Hello World!"); //display the string.
+         }
+        }
+ 2) 在DOS命令窗口,编译HelloWorld.java：
+    d:\save>javac  HelloWorld.java 
+    生成字节码文件：HelloWorld.class
+ 3) 运行HelloWorld.class：
+    D:\Save> java HelloWorld
+    结果：Hello　World！`
+
 **说明:** JVM只运行main方法中的语句。
 
 ### Applet (小程序): 运行在WWW浏览器上
@@ -153,37 +175,32 @@ Sun公司的白皮书，Java的定义:
 面向对象程序设计（Object-Oriented Programming, **OOP**）是一种软件开发范式，它将数据和操作数据的方法封装在一起，形成**对象**。OOP 的核心思想是模拟现实世界，通过对象之间的交互来构建复杂的系统。
 
 OOP 的基本特征通常被总结为以下四点，有时也会加上抽象性：
-
-1. 封装 (Encapsulation)
 ---
+1. 封装 (Encapsulation)
 **封装**是指将数据（属性）和操作数据的方法（行为）捆绑在一起，形成一个独立的单元——对象。同时，它还限制了对对象内部细节的直接访问，外部只能通过对象提供的公共接口来与对象进行交互。
 
 * **优点：** 隐藏了实现细节，降低了系统的复杂性；提高了代码的模块化和可维护性；增强了数据的安全性，防止外部随意修改数据。
-
-2. 继承 (Inheritance)
 ---
+2. 继承 (Inheritance)
 **继承**允许一个类（子类或派生类）继承另一个类（父类或基类）的属性和方法。子类可以重用父类的代码，并可以在此基础上添加新的功能或修改现有功能。
 
 * **优点：** 实现了代码的重用，减少了冗余；建立了类之间的层次结构，有助于更好地组织和理解代码；是实现多态的前提。
-
-3. 多态 (Polymorphism)
 ---
+3. 多态 (Polymorphism)
 **多态**意味着允许使用一个共同的接口来表示不同类的对象。简单来说，就是同一个方法在不同的对象上可以有不同的行为。多态主要通过**方法重载**（Overloading）和**方法重写**（Overriding）实现。
 
 * **方法重载：** 同一个类中，多个方法名相同但参数列表不同。
 * **方法重写：** 子类重新定义父类中已有的方法，通常用于实现子类特有的行为。
 * **优点：** 提高了代码的灵活性和可扩展性；简化了代码，降低了耦合度。
-
-4. 抽象 (Abstraction)
 ---
+4. 抽象 (Abstraction)
 **抽象**是指从具体的实现细节中抽离出共同的、本质的特征，并以简洁的方式表示出来。在 OOP 中，抽象通常通过**抽象类**和**接口**来实现。它关注的是“做什么”，而不是“如何做”。
 
 * **抽象类：** 不能被实例化的类，可以包含抽象方法（只有声明没有实现）和具体方法。子类必须实现抽象方法。
 * **接口：** 一组抽象方法的集合，定义了类应该遵循的行为规范，不包含任何实现细节。
 * **优点：** 降低了系统的复杂性，有助于设计师和开发者关注核心功能；提供了更高层次的视图，便于理解和设计。
-
-1. 聚合/关联 (Association/Aggregation/Composition) - 有时也被提及
 ---
+1. 聚合/关联 (Association/Aggregation/Composition) - 有时也被提及
 虽然不总是被列为四大基本特征之一，但**聚合**和**组合**是描述对象之间**关系**的重要概念，它们都属于更广泛的**关联**关系。
 
 * **关联 (Association):** 对象之间的一种泛化关系。
