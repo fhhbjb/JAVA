@@ -5,7 +5,7 @@
 1. **JavaSE**(Java Standard Edition):
   * 开发客户端应用程序平台。
   * vb,vc,delphi.powerbuilder
-2. **JavaEEC**:
+2. **JavaEE**:
   * 开发分布式企业级应用的平台。
   * 基于Internet环境的分布式软件: .NET平台中的ASP.NET
 3. **JavaME**(Java  Micro Edition):
