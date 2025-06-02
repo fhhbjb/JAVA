@@ -93,6 +93,8 @@ Swing 采用**委托事件模型 (Delegation Event Model)** 来处理用户交�
 3.  将监听器对象注册到事件源上。
 
 
+## 顶层容器
+![alt text](image-2.png)
 **说明**
 1) 基于Swing的GUI程序，==至少要有一个顶层容器==作为==根==的容器层级结构。
 2) 每个GUI组件只能添加到一个容器。
@@ -100,8 +102,6 @@ Swing 采用**委托事件模型 (Delegation Event Model)** 来处理用户交�
 4) 可在顶层容器中添加菜单栏,它将位于顶层容器的约定置。
    (在顶层容器内，但在内容器的外部)![alt text](image-1.png)
 
-## 顶层容器
-![alt text](image-2.png)
 ### JFrame构造方法：
 1. JFrame(): 创建一个初始不可见且标题为空的窗口框架。
 2. JFrame(String title)：创建一个初始不可见且标题为title的窗口
@@ -148,32 +148,115 @@ public class TestJFrame{
     * **使用场景：** 当您不需要复杂的布局，或者只是简单地堆放少量组件时。
 
     ```java
-    import javax.swing.*;
-    import java.awt.*;
-
-    public class JPanelDemo1 {
-        public static void main(String[] args) {
-            JFrame frame = new JFrame("JPanel Default Layout Demo");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(400, 300);
-            frame.setLocationRelativeTo(null); // 居中显示
-
-            // 创建一个默认布局的JPanel
-            JPanel panel = new JPanel();
-            panel.setBackground(Color.LIGHT_GRAY); // 设置背景色以便区分
-
-            // 添加一些组件到JPanel
-            panel.add(new JButton("Button 1"));
-            panel.add(new JButton("Button 2"));
-            panel.add(new JLabel("Label 1"));
-            panel.add(new JTextField(10));
-
-            // 将JPanel添加到JFrame
-            frame.add(panel);
-            frame.setVisible(true);
-        }
-    }
+    import javax.swing.*; // 导入Swing包中所有类，例如JFrame, JPanel, JLabel, JTextField
+    import java.awt.*;    // 导入AWT包中所有类，例如Container
+    public class TestJPanel{
+     JFrame jFrame=null; //顶层容器
+	 Container contentPane=null;//顶层容器jFrame的内容器
+	 JPanel jPanel = null;//通用容器
+	 JLabel  nameLabel=null;  //组件
+     JTextField name=null; //组件 
+	 public TestJPanel(){
+       jFrame=new JFrame("JPanel 测试程序 ");
+	   jFrame.setBounds(100,100,300,300);
+	   //将窗口框架的左上角位置设置为坐标点100，100，宽为width,高为height大小
+	   contentPane=jFrame.getContentPane();
+	   //显示窗口框架
+	   jPanel = new JPanel();  
+	   nameLabel = new JLabel("姓名"); 
+       name= new JTextField(10);          
+	   jPanel.add(nameLabel);        
+       jPanel.add(name); 
+       contentPane.add(jPanel); 
+       // this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+	   jFrame.setVisible(true);//一般要放置在最后
+      } 
+    public static void main(String[] args){ 
+      TestJPanel tp = new TestJPanel( ); 
+    } 
+} 
     ```
+**面板容器Jpanel作为顶层容器的内容器**
+```java
+import javax.swing.JFrame; 
+import java.awt.Container; 
+import javax.swing.JPanel; 
+import javax.swing.JLabel; 
+import javax.swing.JTextField;  
+
+public class TestContentPane{
+     JFrame jFrame=null; //顶层容器
+	 Container contentPane=null;//顶层容器jFrame的内容器
+	 JPanel jPanel = null;//通用容器
+	 JLabel  nameLabel=null;  //组件
+     JTextField name=null; //组件 
+	 public TestContentPane(){
+       jFrame=new JFrame("JPanel 测试程序 ");
+	   jFrame.setBounds(100,100,300,300);
+	   jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+	   //将窗口框架的左上角位置设置为坐标点100，100，宽为width,高为height大小
+        
+	   //contentPane=jFrame.getContentPane();
+
+	   //显示窗口框架
+	   jPanel = new JPanel();  
+	   nameLabel = new JLabel("姓名"); 
+       name= new JTextField(10); 
+       jPanel= new JPanel();  
+	   jPanel.add(nameLabel);        
+       jPanel.add(name); 
+       //contentPane.add(jPanel); 
+
+       jFrame.setContentPane(jPanel);
+	    
+	   jFrame.setVisible(true);//一般要放置在最后
+
+      } 
+    public static void main(String[] args){ 
+      TestContentPane tp = new TestContentPane( ); 
+    } 
+} 
+
+```
+**带滚动视窗容器JScrollPane**
+```java
+import javax.swing.JFrame; 
+import java.awt.Container; 
+import javax.swing.JPanel; 
+import javax.swing.JLabel; 
+import javax.swing.JTextField;
+
+public class TestJScrollPanel {    
+   public static void main(String[] args){ 
+      JFrame jframe=new JFrame("JScrollPanel 测试程序");
+      JButton ok=new JButton("确定");
+	  JButton cancel=new JButton("取消");      
+      JTextField tf1 = new JTextField("Text Field Number 1 "); 
+      JTextField  tf2 = new JTextField("Text Field Number 2 "); 
+	  /*
+      JPanel p1 = new JPanel(); 
+      p1.add(ok); 
+      p1.add(cancel); 
+      p1.add(tf1);
+      p1.add(tf2);
+	  
+      JScrollPane p2 = new JScrollPane(); 
+      p2.add(p1); 
+	  */ 
+	  
+      JScrollPane p2 = new JScrollPane(); 
+      p2.add(ok); 
+      p2.add(cancel); 
+      p2.add(tf1);
+      p2.add(tf2);
+	   
+      jframe.add(p2);         
+      jframe.setBounds( 100, 100, 300, 300); 
+      jframe.setVisible(true);        
+   } 
+} 
+
+```
 
 * **`JPanel(LayoutManager layout);`**
     * **含义：** 创建一个新的 `JPanel`，并使用指定的布局管理器。
@@ -328,7 +411,71 @@ public class JScrollPaneWithJPanelDemo {
 ## 布局管理器
  Swing 中三种最常用的布局管理器：**`FlowLayout`**、**`BorderLayout`** 和 **`GridLayout`**。它们是构建用户界面的基石。
 
+`getContentPane().setLayout(layout);` 这行代码的目的是**为 `JFrame` 的内容面板（`contentPane`）设置一个布局管理器**。
 
+让我们一步步来理解它的作用：
+
+### 1. `JFrame` 的结构
+
+`JFrame` 是 Swing 中最顶层的窗口，但它本身并不是直接用来放置组件的地方。`JFrame` 内部有一个复杂的层次结构，其中最重要的一个部分就是**内容面板 (Content Pane)**。
+
+* 你可以把 `JFrame` 想象成一个画框。这个画框有标题栏、边框、最小化/最大化/关闭按钮。
+* 而内容面板就是画框里面真正用来放置“画”（也就是你的 GUI 组件，如按钮、文本框、面板等）的区域。
+
+### 2. `getContentPane()`
+
+* 这个方法是 `JFrame` 类的一个方法，它的作用是**获取 `JFrame` 的内容面板对象**。
+* 它返回一个 `Container` 类型的对象。`Container` 是 AWT 和 Swing 中所有容器组件的父类，它定义了添加、移除组件以及设置布局管理器等基本功能。
+
+### 3. `setLayout(layout)`
+
+* 这是 `Container` 类（`contentPane` 的类型）的一个方法。
+* **作用：** 它用于为当前的容器（在这里就是 `JFrame` 的内容面板）指定一个**布局管理器 (LayoutManager)**。
+* **`layout` 参数：** 这是一个 `LayoutManager` 接口的实现类实例，比如 `new FlowLayout()`、`new BorderLayout()`、`new GridLayout()` 等。
+
+### 4. 为什么需要布局管理器？
+
+在 Swing 中，你不能简单地指定每个组件的精确像素位置和大小（尽管可以通过 `setLayout(null)` 实现绝对定位，但通常不推荐）。组件的摆放和尺寸调整是由**布局管理器**负责的。
+
+布局管理器的主要作用是：
+
+* **自动排列组件：** 它们根据预设的规则（如流式、边界、网格等）自动调整容器中组件的位置和大小。
+* **适应窗口大小变化：** 当用户调整窗口大小时，布局管理器会自动重新计算并调整内部组件的布局，确保界面仍然美观和可用。
+* **平台独立性：** 不同的操作系统和字体大小可能导致组件的实际像素大小不同，布局管理器有助于在不同环境下保持界面的良好呈现。
+
+### 5. `JFrame` 内容面板的默认布局管理器
+
+* **`JFrame` 的内容面板默认使用 `BorderLayout` (边界布局)**。
+* 这意味着，如果您不调用 `getContentPane().setLayout()` 来显式设置布局管理器，那么 `JFrame` 的内容面板将使用 `BorderLayout`。当你直接向 `JFrame` 中添加组件时（例如 `jFrame.add(someComponent);`），实际上是将其添加到了内容面板的 `BorderLayout.CENTER` 区域。
+
+### 总结 `getContentPane().setLayout(layout);` 的作用：
+
+这行代码就是**明确地告诉 `JFrame` 的核心显示区域（内容面板），它应该如何组织和摆放你将要添加到它上面的所有其他 GUI 组件**。
+
+* 如果您想让组件像文本一样从左到右排列，您会使用 `getContentPane().setLayout(new FlowLayout());`。
+* 如果您想把界面分成东、南、西、北、中五个区域，您会使用 `getContentPane().setLayout(new BorderLayout());`。
+* 如果您想把界面分成等大小的网格，您会使用 `getContentPane().setLayout(new GridLayout(rows, cols));`。
+
+在您的示例代码中：
+
+```java
+// ...
+contentPane = jFrame.getContentPane(); // 获取内容面板
+// 这里没有显式调用contentPane.setLayout()
+// 所以 contentPane 将使用其默认的 BorderLayout
+
+jPanel = new JPanel(); // 创建一个 JPanel
+// JPanel 默认使用 FlowLayout，所以 nameLabel 和 name 会在 jPanel 中从左到右排列
+
+jPanel.add(nameLabel);
+jPanel.add(name);
+
+contentPane.add(jPanel); // 将 jPanel 添加到 contentPane
+// 因为 contentPane 默认是 BorderLayout，所以 jPanel 会被添加到 contentPane 的 BorderLayout.CENTER 区域
+// ...
+```
+
+这段代码虽然没有显式地为 `contentPane` 设置布局，但实际上 `JFrame` 内容面板的默认 `BorderLayout` 依然在起作用。你将 `jPanel` 添加到 `contentPane` 时，没有指定区域，它就会默认添加到 `BorderLayout.CENTER` 区域。而 `jPanel` 内部的 `nameLabel` 和 `name` 则是按照 `jPanel` 自己的默认 `FlowLayout` 来排列的。这就是 Swing 中通过嵌套容器和布局管理器来构建复杂界面的方式。
 
 ### 1. FlowLayout（流式布局）
 
@@ -375,6 +522,38 @@ public class FlowLayoutDemo {
         frame.setVisible(true);
     }
 }
+
+
+//file name：TryFlowLayout.java
+import java.awt.*;
+import javax.swing.*;
+public class TryFlowLayout extends JFrame   {  //顶层窗口类
+	JButton[] button = new JButton[9];  //声明9个按钮类对象
+	FlowLayout layout;    //声明布局管理器对象
+	public TryFlowLayout()  {  
+        super("FlowLayout 应用举例");  //设置顶层窗口标题
+        String label;   
+        
+	    //创建布局管理器对象    
+        layout = new FlowLayout(FlowLayout.LEFT,10,10);   
+        getContentPane().setLayout(layout);      //设置布局管理器
+        	
+        for (int i = 0; i < 9; i++) {               //创建9个按钮对象并添加到窗口中
+           	label = "Button #" + ( i + 1 ) + " ";
+		button[i] = new JButton(label);
+		getContentPane().add(button[i]);
+         }
+         setSize(320,160);                 	//将显示窗口设置为320×160
+         setVisible(true);		//显示窗口
+         setResizable(false);               	//让窗口不能调节大小
+	}
+	public static void main(String[] args){
+	    TryFlowLayout frame = new TryFlowLayout();   //创建顶层窗口对象
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+}
+
+
 ```
 
 ---
@@ -423,6 +602,33 @@ public class BorderLayoutDemo {
         frame.setVisible(true);
     }
 }
+
+
+import javax.swing.*;
+public class TryBorderLayout extends JFrame {   	
+	JButton  North, South, West, East, Center;     	
+	TryBorderLayout() {
+	    super("Borderlayout布局管理器应用举例"); 	
+	    North = new JButton("North");             	
+	    South = new JButton("South");
+	    West = new JButton("West");
+	    East = new JButton("East");
+	    Center = new JButton("Center");
+	    getContentPane().add(North,"North");         
+	    getContentPane().add(South,"South");
+	    getContentPane().add(West,"West");
+	    getContentPane().add(East,"East");
+	    getContentPane().add(Center,"Center");
+	    setSize(300,200);           			
+	    setVisible(true);
+	}
+	public static void main(String[] agrs)
+	{
+	   TryBorderLayout frame = new TryBorderLayout();   	
+	   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+}
+
 ```
 
 ---
@@ -471,6 +677,40 @@ public class GridLayoutDemo {
         frame.setVisible(true);
     }
 }
+
+
+import java.awt.*;
+import javax.swing.*;
+public class TestGridLayout2 extends JFrame{
+  JButton[] button;
+  String[] str={"0","1","2","3","4","5","6","7","8","9","+","-","*","/","="};
+  JPanel panel1,panel2;
+  public TestGridLayout2(String title){
+    super(title);
+    setBounds(100,100,250,250);
+    button=new JButton[15];
+    setLayout(new BorderLayout());
+    JPanel panel1=new JPanel();
+    JPanel panel2=new JPanel();
+    add(panel1,"North");
+    add(panel2,"Center");
+    
+    JTextField tf=new JTextField(20);
+    panel1.add(tf);
+    panel2.setLayout(new GridLayout(5,3));
+    for(int i=0;i<15;i++){
+      button[i]=new JButton(str[i]);
+      panel2.add(button[i]);
+      }
+    setVisible(true);
+   }
+   public static void main(String[] args){
+      String title=new String("GridLayout 测试程序");
+      new TestGridLayout2(title);
+      }
+ }
+    
+    
 ```
 
 ---
@@ -485,7 +725,28 @@ public class GridLayoutDemo {
 
 
 
-## Swing常用组件
+## Swing组件
+### 顶层容器
+![alt text](image-18.png)
+
+### 通用容器
+![alt text](image-19.png)
+
+### 专用容器
+![alt text](image-20.png)
+
+### 基本组件
+![alt text](image-21.png)
+![alt text](image-22.png)
+
+### 不可编辑信息显示
+![alt text](image-23.png)
+
+### 交互式高格式信息显示
+![alt text](image-24.png)
+
+
+
 ### 标签
 在Swing中，用==JLabel类==实现标签组件，它的显示形式得到了扩展，它不仅可以显示文字，还可以显示图片。
 您好！您提供的这些是 `JLabel` 类中常用的方法和构造方法。`JLabel` 是 Swing 中一个非常基础且重要的组件，主要用于显示文本或图像（图标），但它**不能被编辑**。
@@ -858,7 +1119,189 @@ Java 的 AWT 和 Swing 采用的是**委托事件模型 (Delegation Event Model)
     * 监听器接口通常命名为 `XxxListener`，例如 `ActionListener`、`MouseListener`、`KeyListener`。
     * 如果监听器接口有多个方法，但你只需要实现其中一个，可以使用对应的**适配器类 (Adapter Class)** 来简化代码（例如 `MouseAdapter` 实现了 `MouseListener`，你可以只重写你需要的方法）。
 
-4.  **事件处理方法 (Event Handling Method)：**
+    在 Java 编程中，尤其是在图形用户界面（GUI）开发（比如使用 AWT 或 Swing 库）时，`public void addTypeListener(TypeListener e);` 这样的方法是用来**注册事件监听器（Event Listener）** 的。
+
+我们来详细解释一下：
+
+### 1. 事件 (Event)
+
+在 GUI 应用中，**事件**是指用户或系统产生的某种动作。
+* **用户动作：** 比如点击鼠标、按下键盘、拖动窗口、在文本框里输入文字等。
+* **系统动作：** 比如窗口被关闭、组件失去焦点等。
+**低级事件**
+<table>
+  <thead>
+    <tr>
+      <td>事件类</td>
+      <td>描述</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>FocusEvent</td>
+      <td>在组件获得或失去焦点时产生的事件</td>
+    </tr>
+    <tr>
+      <td>MouseEvent</td>
+      <td>用户操作鼠标产生的事件</td>
+    </tr>
+    <tr>
+      <td>KeyEvent</td>
+      <td>用户操作键盘产生的事件</td>
+    </tr>
+    <tr>
+      <td>WindowEvent</td>
+      <td>用户操作窗口产生的事件</td>
+    </tr>
+  </tbody>
+</table>
+
+**语义事件**
+<table>
+  <thead>
+    <tr>
+      <td>事件类</td>
+      <td>描述</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="color: red;">ActionEvent</td>
+      <td>激活组件产生的事件</td>
+    </tr>
+    <tr>
+      <td style="color: blue;">ItemEvent</td>
+      <td>选择了某些选项产生的事件</td>
+    </tr>
+    <tr>
+      <td>ComponentEvent</td>
+      <td>当组件被移动、缩放、显示或隐藏时产生的事件</td>
+    </tr>
+    <tr>
+      <td>ContainerEvent</td>
+      <td>当在容器中添加或删除组件时产生的事件</td>
+    </tr>
+    <tr>
+      <td style="color: blue;">TextEvent</td>
+      <td>当文本框内容发生变化时产生的事件</td>
+    </tr>
+  </tbody>
+</table>
+
+### 2. 事件源 (Event Source)
+![alt text](image-25.png)
+**事件源**是产生事件的 GUI 组件。
+* 一个按钮（Button）可以产生一个“点击”事件。
+* 一个文本框（TextField）可以产生一个“按键”事件或“焦点”事件。
+* 一个窗口（Frame/JFrame）可以产生一个“关闭”事件。
+
+### 3. 事件监听器 (Event Listener)
+
+**事件监听器**是一个实现了特定接口的 Java 对象。它的职责是**“监听”**（或者说“等待”）特定类型的事件发生，并在事件发生时执行相应的代码。
+
+**窗口监听器 :WindowListener**
+The WindowListener Interface 
+
+
+<table>
+  <thead>
+    <tr>
+      <td>Method</td>
+      <td>Purpose</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="color: red;">windowOpened(WindowEvent e)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td style="color: red;">windowClosing(WindowEvent e)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td style="color: red;">windowClosed(WindowEvent e)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td style="color: red;">windowIconified(WindowEvent e)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td style="color: red;">windowDeiconified(WindowEvent e)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td style="color: red;">windowActivated(WindowEvent e)</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td style="color: red;">windowDeactivated(WindowEvent e)</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+### 4. `addTypeListener(TypeListener e)` 的含义
+
+* **`add`：** 表示“添加”。
+* **`Type`：** 这是一个占位符，代表了具体的事件类型。例如，`Mouse` 代表鼠标事件，`Key` 代表键盘事件。
+* **`Listener`：** 表示“监听器”。
+* **`TypeListener e`：** `e` 是一个参数，它是一个实现了特定`TypeListener`接口的对象。这个对象就是我们要注册的事件监听器。
+
+所以，`public void addTypeListener(TypeListener e);` 这句话的完整意思是：
+
+**“这是一个公开的方法，没有返回值（void），它的名字叫做 `addTypeListener`。它的作用是把一个实现了 `TypeListener` 接口的对象 `e` 注册到当前组件上，使得当某种 `Type` 类型的事件发生时，这个组件能够通知到 `e` 这个监听器，然后 `e` 就可以执行相应的处理逻辑。”**
+
+### 例子解释：
+
+* **`addMouseListener(MouseListener e);`**
+    * **事件类型：** 鼠标事件 (Mouse Event)。
+    * **事件源：** 任何可以与鼠标交互的组件，例如按钮、面板、窗口等。
+    * **监听器接口：** `MouseListener` 接口。
+    * **作用：** 当你对一个组件调用 `addMouseListener()` 方法并传入一个 `MouseListener` 对象时，这个组件就会开始“监听”鼠标事件。比如，当用户在这个组件上点击鼠标、按下鼠标键、释放鼠标键、鼠标进入或离开组件区域时，这个 `MouseListener` 对象的相应方法就会被调用。
+
+* **`addKeyListener(KeyListener e);`**
+    * **事件类型：** 键盘事件 (Key Event)。
+    * **事件源：** 通常是能够接收键盘输入的组件，比如文本框、窗口等（但需要注意焦点）。
+    * **监听器接口：** `KeyListener` 接口。
+    * **作用：** 当你对一个组件调用 `addKeyListener()` 方法并传入一个 `KeyListener` 对象时，这个组件就会开始“监听”键盘事件。当用户在这个组件上按下键盘键、释放键盘键、或输入字符时，这个 `KeyListener` 对象的相应方法就会被调用。
+
+```java
+ import java.awt.*;
+ import java.awt.event.*;
+ import javax.swing.*;
+ class windowListener implements WindowListener {
+     public void windowClosed(WindowEvent e){  }
+     public void windowClosing(WindowEvent e){
+	 System.out.println("window closed" );	  
+	 System.exit(0);   }
+     public void windowIconified(WindowEvent e){  }
+     public void windowDeiconified(WindowEvent e){  }
+     public void windowOpened(WindowEvent e){
+	   System.out.println("window opened" );	    
+       }
+     public void windowActivated(WindowEvent e){
+	    System.out.println("window Activated" );	    
+       }
+     public void windowDeactivated(WindowEvent e){
+	   System.out.println("window Deactivated" );  } 
+ }
+ public class TestWindowEvent  extends JFrame{     
+     TestWindowEvent(){		 
+	 this.addWindowListener(new windowListener());
+	 this.setSize(200,200);
+	 setVisible(true);		
+       }
+      public static  void main(String[]args){
+            new TestWindowEvent();
+      }
+ }
+```
+
+
+
+5.  **事件处理方法 (Event Handling Method)：**
     * 事件监听器接口中定义的方法，当事件发生时，由 JVM 自动回调执行。
     * 例子：`ActionListener` 接口中的 `actionPerformed(ActionEvent e)` 方法。
 
@@ -871,171 +1314,6 @@ Java 的 AWT 和 Swing 采用的是**委托事件模型 (Delegation Event Model)
 3.  **查找并通知监听器：** 事件源会检查它是否注册了对该类型事件感兴趣的监听器。如果注册了，它会遍历所有注册的监听器，并将事件对象作为参数调用监听器中相应的方法。
 4.  **监听器执行事件处理代码：** 被调用的监听器方法（例如 `actionPerformed()`）会执行预先定义好的业务逻辑代码，从而响应用户操作。
 
-#### 3. 实现事件处理的几种常见方式
-
-##### A. 作为内部类实现 (最常用和推荐)
-
-将监听器类定义在事件源所在类的内部。
-
-1.  **匿名内部类 (Anonymous Inner Class)：** 最简洁的方式，尤其适用于只使用一次的简单监听器。
-
-    ```java
-    import javax.swing.*;
-    import java.awt.event.ActionEvent;
-    import java.awt.event.ActionListener;
-
-    public class InnerClassEventDemo extends JFrame {
-        public InnerClassEventDemo() {
-            setTitle("匿名内部类事件处理");
-            setSize(300, 200);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setLayout(new java.awt.FlowLayout());
-
-            JButton button = new JButton("点击我");
-            add(button);
-
-            // 使用匿名内部类实现 ActionListener
-            button.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    JOptionPane.showMessageDialog(InnerClassEventDemo.this, "按钮被点击了！(匿名内部类)");
-                }
-            });
-
-            setVisible(true);
-        }
-
-        public static void main(String[] args) {
-            SwingUtilities.invokeLater(() -> new InnerClassEventDemo());
-        }
-    }
-    ```
-
-2.  **命名内部类 (Named Inner Class)：** 当监听器逻辑比较复杂或需要被多个事件源共享时。
-
-    ```java
-    import javax.swing.*;
-    import java.awt.event.ActionEvent;
-    import java.awt.event.ActionListener;
-
-    public class NamedInnerClassEventDemo extends JFrame {
-        private JButton button1;
-        private JButton button2;
-
-        public NamedInnerClassEventDemo() {
-            setTitle("命名内部类事件处理");
-            setSize(300, 200);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setLayout(new java.awt.FlowLayout());
-
-            button1 = new JButton("按钮 1");
-            button2 = new JButton("按钮 2");
-            add(button1);
-            add(button2);
-
-            MyButtonListener listener = new MyButtonListener(); // 创建监听器实例
-            button1.addActionListener(listener); // 注册监听器
-            button2.addActionListener(listener); // 注册同一个监听器到不同按钮
-
-            setVisible(true);
-        }
-
-        // 命名内部类实现 ActionListener
-        private class MyButtonListener implements ActionListener {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // 根据事件源判断是哪个按钮被点击
-                if (e.getSource() == button1) {
-                    JOptionPane.showMessageDialog(NamedInnerClassEventDemo.this, "按钮 1 被点击了！");
-                } else if (e.getSource() == button2) {
-                    JOptionPane.showMessageDialog(NamedInnerClassEventDemo.this, "按钮 2 被点击了！");
-                }
-            }
-        }
-
-        public static void main(String[] args) {
-            SwingUtilities.invokeLater(() -> new NamedInnerClassEventDemo());
-        }
-    }
-    ```
-
-3.  **Lambda 表达式 (Java 8+):** 对于函数式接口（只有一个抽象方法的接口），可以使用 Lambda 表达式极大地简化事件处理代码。
-
-    ```java
-    import javax.swing.*;
-
-    public class LambdaEventDemo extends JFrame {
-        public LambdaEventDemo() {
-            setTitle("Lambda 表达式事件处理");
-            setSize(300, 200);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setLayout(new java.awt.FlowLayout());
-
-            JButton button = new JButton("点击我！(Lambda)");
-            add(button);
-
-            // 使用 Lambda 表达式实现 ActionListener
-            button.addActionListener(e -> {
-                JOptionPane.showMessageDialog(this, "按钮被点击了！(Lambda)");
-            });
-
-            setVisible(true);
-        }
-
-        public static void main(String[] args) {
-            SwingUtilities.invokeLater(() -> new LambdaEventDemo());
-        }
-    }
-    ```
-
-##### B. 作为外部类实现 (不常用，除非监听器非常通用)
-
-将监听器定义为一个独立的公共类。
-
-```java
-// MyExternalListener.java
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-public class MyExternalListener implements ActionListener {
-    private JFrame parentFrame; // 引用父窗口，以便弹出消息框
-
-    public MyExternalListener(JFrame frame) {
-        this.parentFrame = frame;
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(parentFrame, "按钮被点击了！(外部类)");
-    }
-}
-
-// ExternalClassEventDemo.java
-import javax.swing.*;
-
-public class ExternalClassEventDemo extends JFrame {
-    public ExternalClassEventDemo() {
-        setTitle("外部类事件处理");
-        setSize(300, 200);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new java.awt.FlowLayout());
-
-        JButton button = new JButton("点击我");
-        add(button);
-
-        button.addActionListener(new MyExternalListener(this)); // 实例化并注册外部监听器
-
-        setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new ExternalClassEventDemo());
-    }
-}
-```
-
-##### C. 所在类实现监听器接口 (适用于只有一个事件源或事件处理逻辑集中的情况)
 
 让 GUI 窗口类本身实现监听器接口。
 
@@ -1081,6 +1359,22 @@ public class ThisClassEventDemo extends JFrame implements ActionListener { // �
 有些监听器接口包含多个方法（例如 `MouseListener` 有 `mouseClicked`, `mousePressed`, `mouseReleased`, `mouseEntered`, `mouseExited`）。如果你只需要实现其中一个方法，实现整个接口会显得很麻烦，因为你必须为空的其他方法提供空实现。
 
 为了解决这个问题，Java 提供了**适配器类**，它们是抽象类，实现了监听器接口中的所有方法（空实现）。你可以继承适配器类，然后只重写你需要的方法。
+```java
+Public abstract class WindowAdapter implements 
+     WindowListener,WindowStateListener,WindowFocusListener {
+     public void windowClosed(WindowEvent e){ }
+     public void windowClosing(WindowEvent e){　}
+     public void windowIconified(WindowEvent e){  }
+     public void windowDeiconified(WindowEvent e){  }
+     public void windowOpened(WindowEvent e){  }
+     public void windowActivated(WindowEvent e){ }
+     public void windowDeactivated(WindowEvent e){　} 
+     public void windowStateChanged(WindowEvent e){　}         
+     public void windowGainedFocus(WindowEvent e){　}  
+     public void windowLostFocus(WindowEvent e){　} 
+
+ }
+```
 
 **示例：`MouseAdapter`**
 
@@ -1123,6 +1417,123 @@ public class AdapterClassEventDemo extends JFrame {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new AdapterClassEventDemo());
     }
+}
+```
+```java
+import java.awt.*;
+ import java.awt.event.*;
+ import javax.swing.*;
+ class windowAdapter extends WindowAdapter {   
+  public void windowClosing(WindowEvent e){
+	 System.out.println("window closed" );	  
+	 System.exit(0);
+  }   
+  public void windowOpened(WindowEvent e){
+	   System.out.println("window opened" );	    
+  }
+  public void windowActivated(WindowEvent e){
+	    System.out.println("window Activated" );	    
+  }
+ public void windowDeactivated(WindowEvent e){
+	   System.out.println("window Deactivated" );	    
+  } 
+ }
+public class TestWindowAdapter  extends JFrame{     
+	TestWindowAdapter(){		 
+		this.addWindowListener(new     
+              windowAdapter());
+		this.setSize(200,200);
+		setVisible(true);		
+	}
+	public static  void main(String[]args){
+		new TestWindowAdapter();
+	}
+ }
+```
+
+==键盘事件的处理==：`java.awt.event.KeyEvent`
+==鼠标事件的处理==：`java.awt.event.MouseEvent`
+
+### 语义事件的处理：与组件有关的一些事件
+==单击按钮==：ActionEvent事件
+==选择、取消复选或单选按钮==：ItemEvent事件
+==拖动滚动条==：AdjustMentEvent事件
+<table>
+  <thead>
+    <tr>
+      <td>监听器接口</td>
+      <td>方法</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="color: red;">ActionListener</td>
+      <td style="color: red;">Void actionPerformed(ActionEvent e)</td>
+    </tr>
+    <tr>
+      <td>ItemEvent</td>
+      <td>Void ItemStateChanged(ItemEvent e)</td>
+    </tr>
+    <tr>
+      <td>AdjustmentEvent</td>
+      <td>Void adjustmentValueChanged(AdjustmentEvent e)</td>
+    </tr>
+  </tbody>
+</table>
+==无相应的适配器==
+
+```java
+public class TestActionEvent extends JFrame implements ActionListener{
+	JLabel jl=new JLabel();
+	JButton jb=new JButton("ok");int i=0;
+	TestActionEvent(){
+		jb.addActionListener(this);
+		getContentPane().add(jl,"North");
+		getContentPane().add(jb,"Center");		
+		setSize(200,300);
+		setVisible(true);
+	};  
+    public void actionPerformed(ActionEvent e){	
+	      if (i==0){
+	         jl.setText("1");
+	         i=1;
+	       }else{
+	         jl.setText("0");
+	         i=0;
+               }
+        }
+	public static void main(String[] args) 	{
+		 new TestActionEvent();
+	}
+	
+}
+```
+```java
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+class TestActionEvent2  extends JFrame {
+    Button b3=new Button("exit");
+    public TestActionEvent2(){
+		this.getContentPane().setLayout(new BorderLayout());
+		Panel p=new Panel();
+       
+		b3.addActionListener(  new ActionListener(){
+			                       public void actionPerformed(ActionEvent e){
+									    Object obj = e.getSource();      
+									   if(obj==b3)  System.exit(0);
+								   }
+		                       }  
+	                        );
+		p.add(new Button("ok"));		p.add(new Button("cancel"));
+		p.add(b3);
+
+		this.getContentPane().add(p);
+		show();
+	}
+	public static void main(String[] args) 	{
+		new Jframe();
+	}
 }
 ```
 
